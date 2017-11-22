@@ -77,10 +77,15 @@
 			</div>
 			<br/><br/>
 			<div class="list-group">
-			    <h4 class="list-group-item-heading">Creado por: Andrea Cadena</h4>
-			    <h4 class="list-group-item-heading">Responsable: Andrea Cadena</h4>
-			    <h4 class="list-group-item-heading">Project A: Andrea Cadena</h4>
-			    <h4 class="list-group-item-heading">Project B: Andrea Cadena</h4>
+			    <h4 class="list-group-item-heading">Creado por: {{ $creator->name }}</h4>
+			    <h4 class="list-group-item-heading">Responsable: {{ $responsable->name }}</h4>
+			    @if ($client->get_proj_ms->get(0)->name)
+					<h4 class="list-group-item-heading">Project A: {{ $client->get_proj_ms->get(0)->name}}</h4>
+				@endif
+				@if ($client->get_proj_ms->get(1)->name)
+					<h4 class="list-group-item-heading">Project B: {{ $client->get_proj_ms->get(1)->name}}</h4>
+				@endif
+
 			    {{-- <p class="list-group-item-text">{{ $client->user->name }}</p> --}}
 			</div>
 		</div>

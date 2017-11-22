@@ -95,7 +95,7 @@
 				<label class="form-check-label">
 				    @foreach ($proj_m as $pm)
 				    	@if ( $pm->hasRole('project_m') )
-					    	<input class="form-check-input" type="checkbox" value="">
+					    	<input class="form-check-input" type="checkbox" name="proj_man[]" value="{{ $pm->id }}">
 					    	{{ $pm->name }} {{ $pm->last_name }}
 					    	<br/>
 					    @endif

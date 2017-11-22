@@ -19,9 +19,16 @@ class ClientsController extends Controller
     public function show($id){
 
         $client = Client::find($id);
-        
+        $user_id = $client->user_id;
+        $creator = User::find($user_id);
 
-    	return view('clients.show', compact('client'));
+        foreach ($client->get_responsable as $pm) {
+            $resp = $pm->pivot->user_id;
+        }
+
+        $responsable = User::find($resp);
+
+    	return view('clients.show', compact('client','creator','responsable'));
     }
 
     public function create(){
@@ -30,15 +37,23 @@ class ClientsController extends Controller
     	return view('clients.create', compact('proj_m'));
     }
 
-    public function store(){
+    public function store(Request $request){
     	
     	//Create a new post using the request data
 
-        auth()->user()->publish(
-    	   	new Client(request(['business_name', 'tradename', 'street', 'exterior_num', 'interior_num', 'colony', 'region', 'city', 'zip_code', 'country', 'rfc', 'main_contact', 'main_c_phone', 'main_c_email', 'billing_contact', 'billing_c_phone', 'billing_c_email']))
-    	);
+        $client = new Client(request(['business_name', 'tradename', 'street', 'exterior_num', 'interior_num', 'colony', 'region', 'city', 'zip_code', 'country', 'rfc', 'main_contact', 'main_c_phone', 'main_c_email', 'billing_contact', 'billing_c_phone', 'billing_c_email']));
 
+        auth()->user()->publish($client);
 
+        //Save creator of client as responsable on client_user
+        auth()->user()->responsable($client);
+
+        $client->p_managers()->updateExistingPivot(auth()->id(), ['responsable' => 1]);
+
+        //Save project_managers on client_user
+        $user_id = $request->input('proj_man');
+
+        $client->p_managers()->attach($user_id);
 
     	//And then redirect to the homepage
 

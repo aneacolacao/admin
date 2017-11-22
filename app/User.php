@@ -70,12 +70,18 @@ class User extends Authenticatable
     }
 
     //Projects manager assigned to client
-    public function proj_abr(){
-      return $this->belongsToMany('App\Client');
+    public function clients(){
+      return $this->belongsToMany('App\Client')
+                  ->withTimestamps()
+                  ->withPivot('responsable');
     }
 
     public function publish(Client $client){
       $this->creator_of()->save($client);
+    }
+
+    public function responsable($cliente_r){
+      $this->clients()->save($cliente_r);
     }
 }
 
