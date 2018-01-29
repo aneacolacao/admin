@@ -10,6 +10,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
 use Illuminate\Auth\Events\Registered;
 use Event;
+use Session;
 use App\Events\UserCreated;
 
 class RegisterController extends Controller
@@ -92,8 +93,11 @@ class RegisterController extends Controller
             ->roles()
             ->attach(Role::where('name', 'project_m')->first());
 
-        return $user;
+        //And then redirect to the homepage
+        Session::flash('flash_message', 'Usuario añadido exitosamente!');
 
+        return $user;
+        
     }
 
 

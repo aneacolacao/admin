@@ -83,5 +83,9 @@ class User extends Authenticatable
     public function responsable($cliente_r){
       $this->clients()->save($cliente_r);
     }
+
+    // public function get_p_managers(){
+    //   return $this->belongsToMany('App\Role')->wherePivot('role_id', 1);
+    // }
 }
 
